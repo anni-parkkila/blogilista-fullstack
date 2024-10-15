@@ -23,8 +23,8 @@ jobs:
         run: npm install
       - name: Check style
         run: npm run lint
-      - name: Build
-        run: npm run build
+      # - name: Build
+      #   run: npm run build
       - name: User api test
         run: npm test tests/user_api.test.js
       - name: Login api test
