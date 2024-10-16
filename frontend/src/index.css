@@ -1,0 +1,42 @@
+.navBar {
+  color: rgb(0, 0, 0);
+  background: rgb(170, 170, 170);
+  font-size: 15px;
+  padding: 5px;
+  margin: 20px 0px;
+  max-width: 70%;
+}
+
+.notification {
+  max-width: 70%;
+}
+
+.login {
+  max-width: 30%;
+}
+
+.bloglist,
+.userlist {
+  margin-top: 30px;
+  max-width: 70%;
+}
+
+.blogStyle {
+  margin-top: 40;
+  margin-left: 5;
+  max-width: 70%;
+}
+
+.likeButton:hover {
+  background-color: rgb(54, 131, 148);
+  color: white;
+}
+
+.removeButton {
+  margin-top: 10px;
+}
+
+.removeButton:hover {
+  background-color: rgb(176, 71, 71);
+  color: white;
+}
