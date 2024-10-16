@@ -9,16 +9,15 @@ const User = require('../models/user')
 
 const api = supertest(app)
 
+beforeEach(async () => {
+  await User.deleteMany({})
+
+  const passwordHash = await bcrypt.hash('sekret', 10)
+  const user = new User({ username: 'root', passwordHash })
+
+  await user.save()
+})
 describe('when there is initially one user in db', () => {
-  beforeEach(async () => {
-    await User.deleteMany({})
-
-    const passwordHash = await bcrypt.hash('sekret', 10)
-    const user = new User({ username: 'root', passwordHash })
-
-    await user.save()
-  })
-
   describe('login', () => {
     test('succeeds with the existing username', async () => {
       const user = {
@@ -81,7 +80,7 @@ describe('when there is initially one user in db', () => {
       assert(result.body.error.includes('invalid username or password'))
     })
   })
-  after(async () => {
-    await mongoose.connection.close()
-  })
+})
+after(async () => {
+  await mongoose.connection.close()
 })
