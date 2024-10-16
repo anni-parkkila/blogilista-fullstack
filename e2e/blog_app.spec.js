@@ -1,8 +1,7 @@
 const { test, expect, beforeEach, describe } = require('@playwright/test')
 
 describe('Bloglist app', () => {
-  beforeEach(async ({ page, request }) => {
-    await request.post('/api/testing/reset')
+  beforeEach(async ({ page }) => {
     await page.goto('/')
   })
 
