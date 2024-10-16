@@ -33,5 +33,7 @@ jobs:
         run: npm test
       - name: Prepare frontend
         run: cd frontend && npm install && npm run lint
+      - name: Frontend tests
+        run: cd frontend && npm run test
       - name: Build frontend
         run: npm run build:ui

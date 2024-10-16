@@ -14,6 +14,7 @@ describe('<Blog /> component', () => {
         username: 'root',
         name: 'SuperUser',
       },
+      comments: []
     }
     const user = {
       username: 'root',
@@ -24,25 +25,12 @@ describe('<Blog /> component', () => {
   })
 
   test('renders content', () => {
-    const title = screen.getByText('Adventures of Sherlock Holmes')
+    const title = screen.getByText('Adventures of Sherlock Holmes', { exact: false })
+
     expect(title).toBeDefined()
   })
 
-  test('at start the blog details are hidden', () => {
-    const title = screen.getByText('Adventures of Sherlock Holmes', {
-      exact: false,
-    })
-    expect(title).toBeDefined()
-
-    const url = screen.queryByText('b221.co.uk')
-    expect(url).toBeNull()
-  })
-
-  test('details are shown when "view" button is pressed', async () => {
-    const user = userEvent.setup()
-    const button = screen.getByText('view')
-    await user.click(button)
-
+  test('blog details are shown', async () => {
     const url = screen.getByText('b221.co.uk', { exact: false })
     expect(url).toBeDefined()
 
@@ -55,8 +43,6 @@ describe('<Blog /> component', () => {
 
   test('update likes twice', async () => {
     const user = userEvent.setup()
-    const viewButton = screen.getByText('view')
-    await user.click(viewButton)
 
     const likeButton = screen.getByText('like')
     await user.click(likeButton)
