@@ -2,32 +2,32 @@ name: Deployment pipeline
 
 on:
   push:
-  branches:
-    - master
+    branches:
+      - master
   pull_request:
-  branches: [master]
-  types: [opened, synchronize]
+    branches: [master]
+    types: [opened, synchronize]
 
 env:
   CONDITION: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message), '#skip') }}
 
 jobs:
   deployment_pipeline:
-  runs-on: ubuntu-20.04
-  timeout-minutes: 15
-  steps:
-    - uses: actions/checkout@v4
-    - uses: actions/setup-node@v4
-    with:
-      node-version: '20'
-    - name: Install dependencies
-    run: npm install
-    - name: Check style
-    run: npm run lint
-    - name: API tests
-    env:
-      MONGODB_URI: ${{ secrets.MONGODB_URI }}
-      TEST_MONGODB_URI: ${{ secrets.TEST_MONGODB_URI }}
-      AUTH_SECRET: ${{ secrets.AUTH_SECRET }}
-      PORT: ${{ secrets.PORT }}
-    run: npm test
+    runs-on: ubuntu-20.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install dependencies
+        run: npm install
+      - name: Check style
+        run: npm run lint
+      - name: API tests
+        env:
+          MONGODB_URI: ${{ secrets.MONGODB_URI }}
+          TEST_MONGODB_URI: ${{ secrets.TEST_MONGODB_URI }}
+          AUTH_SECRET: ${{ secrets.AUTH_SECRET }}
+          PORT: ${{ secrets.PORT }}
+        run: npm test

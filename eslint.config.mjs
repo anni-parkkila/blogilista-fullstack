@@ -31,7 +31,7 @@ export default [
     },
   },
   {
-    ignores: ['dist/**', 'build/**'],
+    ignores: ['dist/**', 'build/**', '.github/**'],
   },
   eslintConfigPrettier,
   eslintPluginPrettierRecommended,
