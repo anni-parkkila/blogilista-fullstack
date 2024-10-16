@@ -1,6 +1,4 @@
 # Ignore artifacts:
 build
-dist
 coverage
-.github/**/*
-frontend/**/*
+dist

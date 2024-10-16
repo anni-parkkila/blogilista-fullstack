@@ -22,7 +22,7 @@ jobs:
           node-version: '20'
       - name: Install dependencies
         run: npm install
-      - name: Check style
+      - name: Lint backend
         run: npm run lint
       - name: API tests
         env:
@@ -31,3 +31,9 @@ jobs:
           AUTH_SECRET: ${{ secrets.AUTH_SECRET }}
           PORT: ${{ secrets.PORT }}
         run: npm test
+      - name: Prepare frontend
+        run: cd frontend && npm install && npm run lint
+      - name: Frontend tests
+        run: cd frontend && npm run test
+      - name: Build frontend
+        run: npm run build:ui
