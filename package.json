@@ -8,7 +8,7 @@
     "dev": "cross-env NODE_ENV=development nodemon index.js",
     "test": "cross-env NODE_ENV=test node --test --test-concurrency=1",
     "start:test": "cross-env NODE_ENV=test node index.js",
-    "build:ui": "rm -rf dist && cd ./frontend && npm run build && cp -r dist ..",
+    "build:ui": "rm -rf dist && cd ./frontend && npm install && npm run build && cp -r dist ..",
     "lint": "eslint ."
   },
   "author": "anni-parkkila",
