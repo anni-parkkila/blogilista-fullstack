@@ -1,9 +1,7 @@
 const _ = require('lodash')
 
 const totalLikes = (blogs) => {
-  return blogs.reduce(
-    (acc, cur) => acc + cur.likes,
-    0)
+  return blogs.reduce((acc, cur) => acc + cur.likes, 0)
 }
 
 const favoriteBlog = (blogs) => {
@@ -11,12 +9,11 @@ const favoriteBlog = (blogs) => {
     return undefined
   } else {
     blogs.sort((a, b) => a.likes - b.likes)
-    const favorite =
-        {
-          title: blogs.at(-1).title,
-          author: blogs.at(-1).author,
-          likes: blogs.at(-1).likes
-        }
+    const favorite = {
+      title: blogs.at(-1).title,
+      author: blogs.at(-1).author,
+      likes: blogs.at(-1).likes,
+    }
     return favorite
   }
 }
@@ -30,7 +27,7 @@ const mostBlogs = (blogs) => {
       .map((items, author) => {
         return {
           author: author,
-          blogs: items.length
+          blogs: items.length,
         }
       })
       .orderBy('blogs', 'desc')
@@ -47,12 +44,12 @@ const mostLikes = (blogs) => {
       .groupBy('author')
       .map((items, author) => {
         let likes = 0
-        _.map(items, item => {
+        _.map(items, (item) => {
           likes = item.likes + likes
         })
         return {
           author: author,
-          likes: likes
+          likes: likes,
         }
       })
       .orderBy('likes', 'desc')
@@ -61,15 +58,9 @@ const mostLikes = (blogs) => {
   }
 }
 
-const dummy = (blogs) => {
-  console.log(blogs)
-  return 1
-}
-
 module.exports = {
   totalLikes,
   favoriteBlog,
   mostBlogs,
   mostLikes,
-  dummy
 }

@@ -24,16 +24,10 @@ jobs:
         run: npm install
       - name: Check style
         run: npm run lint
-      # - name: Build
-      #   run: npm run build
-      - name: User api test
+      - name: API tests
         env:
           MONGODB_URI: ${{ secrets.MONGODB_URI }}
           TEST_MONGODB_URI: ${{ secrets.TEST_MONGODB_URI }}
           AUTH_SECRET: ${{ secrets.AUTH_SECRET }}
           PORT: ${{ secrets.PORT }}
-        run: npm test tests/user_api.test.js
-      # - name: Login api test
-      #   run: npm test tests/login_api.test.js
-      # - name: Blog api test
-      #   run: npm test tests/blog_api.test.js
+        run: npm test
