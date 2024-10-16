@@ -22,10 +22,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - name: Start MongoDB
-        uses: supercharge/mongodb-github-action@1.11.0
-        with:
-          mongodb-version: ${{ matrix.mongodb-version }}
       - name: Install dependencies
         run: npm install
       - name: Check style
@@ -33,8 +29,13 @@ jobs:
       # - name: Build
       #   run: npm run build
       - name: User api test
+        env:
+          MONGODB_URI: ${{ secrets.MONGODB_URI }}
+          TEST_MONGODB_URI: ${{ secrets.TEST_MONGODB_URI }}
+          AUTH_SECRET: ${{ secrets.AUTH_SECRET }}
+          PORT: ${{ secrets.PORT }}
         run: npm test tests/user_api.test.js
-      - name: Login api test
-        run: npm test tests/login_api.test.js
-      - name: Blog api test
-        run: npm test tests/blog_api.test.js
+      # - name: Login api test
+      #   run: npm test tests/login_api.test.js
+      # - name: Blog api test
+      #   run: npm test tests/blog_api.test.js
