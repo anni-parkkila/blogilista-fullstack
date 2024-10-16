@@ -23,7 +23,7 @@ blogsRouter.post('/', userExtractor, async (request, response) => {
     author: body.author || 'N/A',
     url: body.url,
     likes: body.likes || 0,
-    user: user
+    user: user,
   })
 
   const savedBlog = await blog.save()
@@ -39,9 +39,25 @@ blogsRouter.put('/:id', async (request, response) => {
   const updatedBlog = await Blog.findByIdAndUpdate(
     request.params.id,
     { likes },
-    { new: true })
+    { new: true }
+  )
   updatedBlog.user = user
   response.json(updatedBlog)
+})
+
+blogsRouter.post('/:id/comments', async (request, response) => {
+  const { content } = request.body
+  const blogToComment = await Blog.findById(request.params.id)
+  const comments = blogToComment.comments.concat(content)
+
+  const blog = await Blog.findByIdAndUpdate(
+    request.params.id,
+    { comments },
+    { new: true }
+  )
+
+  const savedBlog = await blog.save()
+  response.status(201).json(savedBlog)
 })
 
 blogsRouter.delete('/:id', userExtractor, async (request, response) => {
@@ -49,7 +65,9 @@ blogsRouter.delete('/:id', userExtractor, async (request, response) => {
   const blog = await Blog.findById(request.params.id)
   if (blog.user.toString() === user.id.toString()) {
     await Blog.findByIdAndDelete(request.params.id)
-    user.blogs = user.blogs.filter(b => b.id.toString() !== blog.id.toString())
+    user.blogs = user.blogs.filter(
+      (b) => b.id.toString() !== blog.id.toString()
+    )
     await user.save()
     response.status(204).end()
   } else {
@@ -59,12 +77,13 @@ blogsRouter.delete('/:id', userExtractor, async (request, response) => {
 
 blogsRouter.get('/info', async (request, response, next) => {
   await Blog.countDocuments({})
-    .then(numberOfBlogs => {
+    .then((numberOfBlogs) => {
       response.send(
         `<p>Bloglist has info for ${numberOfBlogs} blogs</p>
-          <p>${new Date()}</p>`
-      )})
-    .catch(error => next(error))
+      <p>${new Date()}</p>`
+      )
+    })
+    .catch((error) => next(error))
 })
 
 module.exports = blogsRouter

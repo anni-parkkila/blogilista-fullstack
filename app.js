@@ -13,9 +13,7 @@ const mongoose = require('mongoose')
 
 mongoose.set('strictQuery', false)
 
-logger.info('connecting to', config.MONGODB_URI, {
-  serverSelectionTimeoutMS: 30000, // Increase timeout to 30 seconds
-})
+logger.info('connecting to', config.MONGODB_URI)
 
 mongoose
   .connect(config.MONGODB_URI)
