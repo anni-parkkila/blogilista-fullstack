@@ -33,7 +33,7 @@ const App = () => {
   useEffect(() => {
     dispatch(initializeBlogs())
     dispatch(initializeUsers())
-  }, [])
+  })
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedPlokiappUser')
@@ -42,7 +42,7 @@ const App = () => {
       dispatch(setLoggedUser(loggedUser))
       blogService.setToken(loggedUser.token)
     }
-  }, [])
+  })
 
   const addLike = (blog) => {
     dispatch(likeBlog(blog))
