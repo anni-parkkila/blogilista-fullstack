@@ -9,7 +9,7 @@ export default [
   {
     files: ['**/*.js'],
     languageOptions: {
-      sourceType: ['commonjs'],
+      sourceType: 'commonjs',
       globals: {
         ...globals.node,
       },
