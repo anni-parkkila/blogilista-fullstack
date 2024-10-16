@@ -14,7 +14,7 @@ describe('<Blog /> component', () => {
         username: 'root',
         name: 'SuperUser',
       },
-      comments: []
+      comments: [],
     }
     const user = {
       username: 'root',
@@ -25,7 +25,9 @@ describe('<Blog /> component', () => {
   })
 
   test('renders content', () => {
-    const title = screen.getByText('Adventures of Sherlock Holmes', { exact: false })
+    const title = screen.getByText('Adventures of Sherlock Holmes', {
+      exact: false,
+    })
 
     expect(title).toBeDefined()
   })
