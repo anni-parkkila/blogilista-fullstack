@@ -47,7 +47,7 @@ app.get('/info', async (request, response, next) => {
     .catch((error) => next(error))
 })
 app.get('/version', (req, res) => {
-  res.send('v2.5') // change this string to ensure a new version deployed
+  res.send('v3') // change this string to ensure a new version deployed
 })
 app.get('/health', (req, res) => {
   res.send('ok')
