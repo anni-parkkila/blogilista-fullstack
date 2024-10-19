@@ -54,14 +54,6 @@ jobs:
           name: playwright-report
           path: playwright-report/
           retention-days: 30
-  deploy_to_render:
-    needs: [build_pipeline]
-    runs-on: ubuntu-20.04
-    steps:
-      - uses: actions/checkout@v4
-      - name: Trigger deployment
-        if: ${{ env.CONDITION == 'true' }}
-        run: curl https://api.render.com/deploy/srv-${{ secrets.RENDER_SERVICE_ID }}?key=${{ secrets.RENDER_API_KEY }}
       - name: Build failed
         if: ${{ failure() && env.CONDITION == 'true' }}
         run: echo 'commit [${{ github.sha }}](https://github.com/${{github.repository}}/commit/${{github.sha}}) broke the build :('
@@ -71,6 +63,14 @@ jobs:
         #   colour: '#e00000'
         #   title: Build failed
         #   message: 'commit [${{ github.sha }}](https://github.com/${{github.repository}}/commit/${{github.sha}}) broke the build :('
+  deploy_to_render:
+    needs: [build_pipeline]
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Trigger deployment
+        if: ${{ env.CONDITION == 'true' }}
+        run: curl https://api.render.com/deploy/srv-${{ secrets.RENDER_SERVICE_ID }}?key=${{ secrets.RENDER_API_KEY }}
       - name: Build succeeded
         if: ${{ success() && env.CONDITION == 'true' }}
         run: echo "A new version of Plokilista deployed to https://plokilista.onrender.com/"
