@@ -56,13 +56,12 @@ jobs:
           retention-days: 30
       - name: Build failed
         if: ${{ failure() && env.CONDITION == 'true' }}
-        run: echo 'commit [${{ github.sha }}](https://github.com/${{github.repository}}/commit/${{github.sha}}) broke the build :('
-        # uses: stegzilla/discord-notify@v2
-        # with:
-        #   webhook_url: ${{ secrets.DISCORD_WEBHOOK }}
-        #   colour: '#e00000'
-        #   title: Build failed
-        #   message: 'commit [${{ github.sha }}](https://github.com/${{github.repository}}/commit/${{github.sha}}) broke the build :('
+        uses: stegzilla/discord-notify@v2
+        with:
+          webhook_url: ${{ secrets.DISCORD_WEBHOOK }}
+          colour: '#e00000'
+          title: Build failed
+          message: 'commit [${{ github.sha }}](https://github.com/${{github.repository}}/commit/${{github.sha}}) broke the build :('
   deploy_to_render:
     needs: [build_pipeline]
     runs-on: ubuntu-20.04
@@ -79,7 +78,7 @@ jobs:
         #   webhook_url: ${{ secrets.DISCORD_WEBHOOK }}
         #   colour: '#00b700'
         #   title: Build succeeded!
-        #   message: 'A new version of Pokedex deployed to https://amazing-pokedex.onrender.com/'
+        #   message: 'A new version of Plokilista deployed to https://plokilista.onrender.com/'
   tag_release:
     needs: [build_pipeline, deploy_to_render]
     runs-on: ubuntu-20.04
