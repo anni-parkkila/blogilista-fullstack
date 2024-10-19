@@ -75,15 +75,4 @@ blogsRouter.delete('/:id', userExtractor, async (request, response) => {
   }
 })
 
-blogsRouter.get('/info', async (request, response, next) => {
-  await Blog.countDocuments({})
-    .then((numberOfBlogs) => {
-      response.send(
-        `<p>Bloglist has info for ${numberOfBlogs} blogs</p>
-      <p>${new Date()}</p>`
-      )
-    })
-    .catch((error) => next(error))
-})
-
 module.exports = blogsRouter

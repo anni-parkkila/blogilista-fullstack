@@ -4,6 +4,7 @@ const express = require('express')
 require('express-async-errors')
 const app = express()
 const cors = require('cors')
+const Blog = require('./models/blog')
 const blogsRouter = require('./controllers/blogs')
 const usersRouter = require('./controllers/users')
 const loginRouter = require('./controllers/login')
@@ -34,6 +35,23 @@ app.use(middleware.tokenExtractor)
 app.use('/api/blogs', blogsRouter)
 app.use('/api/users', usersRouter)
 app.use('/api/login', loginRouter)
+
+app.get('/info', async (request, response, next) => {
+  await Blog.countDocuments({})
+    .then((numberOfBlogs) => {
+      response.send(
+        `<p>Bloglist has info for ${numberOfBlogs} blogs</p>
+      <p>${new Date()}</p>`
+      )
+    })
+    .catch((error) => next(error))
+})
+app.get('/version', (req, res) => {
+  res.send('v0') // change this string to ensure a new version deployed
+})
+app.get('/health', (req, res) => {
+  res.send('ok')
+})
 
 if (process.env.NODE_ENV === 'test') {
   const testingRouter = require('./controllers/testing')
