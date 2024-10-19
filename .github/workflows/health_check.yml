@@ -1,0 +1,31 @@
+name: Periodic health check
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches: [master]
+    types: [opened, synchronize]
+  schedule:
+    - cron: '00,15,30,45 11,23 * * *' # https://pubs.opengroup.org/onlinepubs/9699919799/utilities/crontab.html#tag_20_25_07
+
+jobs:
+  simple_periodic_health_check:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Check the deployed Pokedex URL
+        uses: jtalk/url-health-check-action@v4
+        with:
+          # Check the following URLs one by one sequentially
+          url: https://plokilista.onrender.com/
+          # Fail this action after this many failed attempts
+          max-attempts: 3
+          # Delay between retries
+          retry-delay: 10s
+      - name: Health check passed
+        if: ${{success()}}
+        run: echo "Plokilista health check passed"
+      - name: Health check failed
+        if: ${{failure()}}
+        run: echo "Plokilista health check failed"
