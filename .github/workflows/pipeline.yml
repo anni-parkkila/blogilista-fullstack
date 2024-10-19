@@ -54,3 +54,24 @@ jobs:
           name: playwright-report
           path: playwright-report/
           retention-days: 30
+      - name: Trigger deployment
+        if: ${{ env.CONDITION == 'true' }}
+        run: curl https://api.render.com/deploy/srv-${{ secrets.RENDER_SERVICE_ID }}?key=${{ secrets.RENDER_API_KEY }}
+      - name: Build failed
+        if: ${{ failure() && env.CONDITION == 'true' }}
+        run: echo "Build failed :("
+        # uses: stegzilla/discord-notify@v2
+        # with:
+        #   webhook_url: ${{ secrets.DISCORD_WEBHOOK }}
+        #   colour: '#e00000'
+        #   title: Build failed
+        #   message: 'commit [${{ github.sha }}](https://github.com/${{github.repository}}/commit/${{github.sha}}) broke the build :('
+      - name: Build succeeded
+        if: ${{ success() && env.CONDITION == 'true' }}
+        run: echo "Build succeeed! :)"
+        # uses: stegzilla/discord-notify@v2
+        # with:
+        #   webhook_url: ${{ secrets.DISCORD_WEBHOOK }}
+        #   colour: '#00b700'
+        #   title: Build succeeded!
+        #   message: 'A new version of Pokedex deployed to https://amazing-pokedex.onrender.com/'
