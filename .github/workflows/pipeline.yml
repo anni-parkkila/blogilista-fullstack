@@ -72,13 +72,12 @@ jobs:
         run: curl https://api.render.com/deploy/srv-${{ secrets.RENDER_SERVICE_ID }}?key=${{ secrets.RENDER_API_KEY }}
       - name: Build succeeded
         if: ${{ success() && env.CONDITION == 'true' }}
-        run: echo "A new version of Plokilista deployed to https://plokilista.onrender.com/"
-        # uses: stegzilla/discord-notify@v2
-        # with:
-        #   webhook_url: ${{ secrets.DISCORD_WEBHOOK }}
-        #   colour: '#00b700'
-        #   title: Build succeeded!
-        #   message: 'A new version of Plokilista deployed to https://plokilista.onrender.com/'
+        uses: stegzilla/discord-notify@v2
+        with:
+          webhook_url: ${{ secrets.DISCORD_WEBHOOK }}
+          colour: '#00b700'
+          title: Build succeeded!
+          message: 'A new version of Plokilista deployed to https://plokilista.onrender.com/'
   tag_release:
     needs: [build_pipeline, deploy_to_render]
     runs-on: ubuntu-20.04
