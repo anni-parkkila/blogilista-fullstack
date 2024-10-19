@@ -12,7 +12,7 @@ env:
   CONDITION: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message), '#skip') }}
 
 jobs:
-  deployment_pipeline:
+  build_pipeline:
     runs-on: ubuntu-20.04
     timeout-minutes: 15
     steps:
@@ -54,12 +54,17 @@ jobs:
           name: playwright-report
           path: playwright-report/
           retention-days: 30
+  deploy_to_render:
+    needs: [build_pipeline]
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v4
       - name: Trigger deployment
         if: ${{ env.CONDITION == 'true' }}
         run: curl https://api.render.com/deploy/srv-${{ secrets.RENDER_SERVICE_ID }}?key=${{ secrets.RENDER_API_KEY }}
       - name: Build failed
         if: ${{ failure() && env.CONDITION == 'true' }}
-        run: echo "Build failed :("
+        run: echo 'commit [${{ github.sha }}](https://github.com/${{github.repository}}/commit/${{github.sha}}) broke the build :('
         # uses: stegzilla/discord-notify@v2
         # with:
         #   webhook_url: ${{ secrets.DISCORD_WEBHOOK }}
@@ -68,10 +73,23 @@ jobs:
         #   message: 'commit [${{ github.sha }}](https://github.com/${{github.repository}}/commit/${{github.sha}}) broke the build :('
       - name: Build succeeded
         if: ${{ success() && env.CONDITION == 'true' }}
-        run: echo "Build succeeed! :)"
+        run: echo "A new version of Plokilista deployed to https://plokilista.onrender.com/"
         # uses: stegzilla/discord-notify@v2
         # with:
         #   webhook_url: ${{ secrets.DISCORD_WEBHOOK }}
         #   colour: '#00b700'
         #   title: Build succeeded!
         #   message: 'A new version of Pokedex deployed to https://amazing-pokedex.onrender.com/'
+  tag_release:
+    needs: [build_pipeline, deploy_to_render]
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Bump version and push tag
+        if: ${{ env.CONDITION == 'true' }}
+        uses: anothrNick/github-tag-action@1.71.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WITH_V: true
+          PRERELEASE: true
+          DEFAULT_BUMP: patch
