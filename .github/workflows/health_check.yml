@@ -8,7 +8,7 @@ on:
     branches: [master]
     types: [opened, synchronize]
   schedule:
-    - cron: '00,15,30,45 11,23 * * *' # https://pubs.opengroup.org/onlinepubs/9699919799/utilities/crontab.html#tag_20_25_07
+    - cron: '00,15,30,45 12,00 * * *' # https://pubs.opengroup.org/onlinepubs/9699919799/utilities/crontab.html#tag_20_25_07
 
 jobs:
   simple_periodic_health_check:
